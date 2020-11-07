@@ -1,7 +1,7 @@
 package services;
 
 import database.UserDB;
-import models.User;
+import models.Users;
 import java.util.List;
 
 public class UserService {
@@ -12,16 +12,16 @@ public class UserService {
         userDB = new UserDB();
     }
 
-    public User get(String username) throws Exception {
+    public Users get(String username) throws Exception {
         return userDB.getUser(username);
     }
 
-    public List<User> getAll() throws Exception {
+    public List<Users> getAll() throws Exception {
         return userDB.getAll();
     }
 
     public int update(String username, String password, String firstname, String lastname, String email) throws Exception {
-        User user = get(username);
+        Users user = get(username);
         user.setPassword(password);
         user.setFirstname(firstname);
         user.setLastname(lastname);
@@ -30,7 +30,7 @@ public class UserService {
     }
 
     public int delete(String username) throws Exception {
-        User deletedUser = userDB.getUser(username);
+        Users deletedUser = userDB.getUser(username);
         // do not allow the admin to be deleted
         if (deletedUser.getUsername().equals("admin")) {
             return 0;
@@ -39,7 +39,10 @@ public class UserService {
     }
 
     public int insert(String username, String password, String firstname, String lastname, String email) throws Exception {
-        User user = new User(username, password, firstname, lastname, email);
+        Users user = new Users(username, password);
+        user.setEmail(email);
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
         return userDB.insert(user);
     }
 }
